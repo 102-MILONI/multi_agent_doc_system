@@ -36,40 +36,45 @@ This project implements a **multi-agent AI system** that functions like a smart 
 ---
 
 ## Project Structure
+
 ```
 multi_agent_doc_system/
+├── .streamlit/
+│ └── secrets.toml             # HuggingFace token & provider config
+│
 ├── agents/
-│   ├── __init__.py
-│   ├── classifier_agent.py        # Detects file type + intent, routes docs
-│   ├── json_agent.py              # Handles structured JSON
-│   └── email_agent.py             # Processes email text (sender, urgency, etc.)
+│ ├── init.py
+│ ├── classifier_agent.py      # Detects file type + intent, routes docs
+│ ├── json_agent.py            # Handles structured JSON
+│ └── email_agent.py           # Processes email text (sender, urgency, etc.)
 │
 ├── memory/
-│   ├── __init__.py
-│   ├── memory_manager.py          # Handles reading/writing shared memory
-│   └── memory_store.json          # JSON-based memory (can upgrade to Redis/SQLite)
+│ ├── init.py
+│ ├── memory_manager.py        # Handles reading/writing shared memory
+│ ├── memory_store.json        # JSON-based memory (can upgrade to Redis/SQLite)
+│ └── memory_export.csv        # Exportable audit trail
 │
 ├── utils/
-│   ├── __init__.py
-│   └── file_loader.py             # Reads PDF, JSON, or plain text input
+│ ├── init.py
+│ ├── file_loader.py           # Reads PDF, JSON, or plain text input
+│ └── hf_llm.py                # LLM interface using HuggingFace (Mixtral)
 │
 ├── data/
-│   ├── input/                     # Uploaded documents
-│   └── output/                    # Extracted info, routing logs, audit trails
+│ ├── input/                   # Uploaded documents
+│ └── output/                  # Extracted info, routing logs, audit trails
 │
-├── examples/                      # Ready-to-use input files for testing
-│   ├── sample_email.txt
-│   ├── sample_invoice.json
-│   └── sample_complaint.pdf
+├── examples/                  # Ready-to-use input files for testing
+│ ├── sample_email.txt
+│ ├── sample_invoice.json
+│ └── sample_complaint.pdf
 │
 ├── tests/
-│   └── test_agents.py             # Unit tests for each agent
+│ └── test_agents.py           # Unit tests for each agent
 │
-├── streamlit_app.py              # 🎯 Streamlit-based frontend interface
-├── main.py                       # Optional: CLI-based orchestrator
-├── requirements.txt              # Python + Streamlit + LLM dependencies
-└── README.md                     # Full project documentation
-
+├── streamlit_app.py           # Streamlit-based frontend interface
+├── main.py                    # Optional: CLI-based orchestrator
+├── requirements.txt           # Python + Streamlit + LLM dependencies
+└── README.md                  # Full project documentation
 ```
 
 #### Set Up Virtual Environment
@@ -90,6 +95,14 @@ python -m venv .venv
 ### Install Dependencies
 ```bash
 pip install -r requirements.txt
+```
+### Configure HuggingFace LLM
+Create .streamlit/secrets.toml:
+```bash
+[api]
+hf_token = "hf_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"  # Your Hugging Face token
+provider = "together"
+model_name = "mistralai/Mistral-7B-Instruct-v0.
 ```
 
 ### Start the Application:
